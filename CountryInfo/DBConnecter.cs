@@ -11,6 +11,7 @@ namespace CountryInfo
         private Table<Cities> tbCities;
         private Table<Countries> tbCountries;
         private Table<Regions> tbRegions;
+
         /// <summary>
         /// Конструктор класса для работы с БД
         /// </summary>
