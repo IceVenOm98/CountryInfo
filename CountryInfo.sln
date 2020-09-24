@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountryInfo", "CountryInfo\
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Country", "Country\Country.sqlproj", "{CEF80DB8-1BD6-48C5-95E8-D387147DFEF3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D31C2B62-E808-490E-A70F-F0B4C5946C84}"
+	ProjectSection(SolutionItems) = preProject
+		CountryInfo\ConnectionString.txt = CountryInfo\ConnectionString.txt
+		CountryInfo\ConnectionString1.txt = CountryInfo\ConnectionString1.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

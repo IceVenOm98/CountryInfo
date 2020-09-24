@@ -224,8 +224,8 @@ namespace CountryInfo
                         ChooseConfigFileToolStripMenuItem_Click(sender, e);
                     }
                 }
+                ShowCountriesInDB();
             }
-            UpdateListOfCountries();
         }
     }
 }
