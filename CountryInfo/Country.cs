@@ -3,10 +3,10 @@
 /// </summary>
 public class Country
 {
-    public string name { get; set; }
-    public string capital { get; set; }
-    public string region { get; set; }
-    public int population { get; set; }
-    public double area { get; set; }
-    public string numericCode { get; set; }
+    public string Name { get; set; }
+    public string Capital { get; set; }
+    public string Region { get; set; }
+    public int Population { get; set; }
+    public double Area { get; set; }
+    public string NumericCode { get; set; }
 }

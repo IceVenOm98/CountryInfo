@@ -6,11 +6,11 @@ namespace CountryInfo
 {
     internal class JSONAPIConnecter : Interfaces.IAPIConnecter
     {
-        public int mode { get; set; }
+        public int Mode { get; set; }
         public Country GetCountry(string url)
         {
             string response = GetStringFromUrl(url);
-            switch (mode)
+            switch (Mode)
             {
                 case 0:
                     response = EditStringFromRestcountries(response);
@@ -46,14 +46,14 @@ namespace CountryInfo
             {
                 throw new Exception("Проблема с парсингом JSON. API не сопадает с ожидаемым.", ex);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;// new Exception("Полученный формат не является JSON-объектом.", ex);
             }
         }
         private string EditStringFromRestcountries(string response)
         {
-            return response = response.Substring(1, response.Length - 2);
+            return response.Substring(1, response.Length - 2);
         }
         private string EditStringFromHtmlweb(string response)
         {

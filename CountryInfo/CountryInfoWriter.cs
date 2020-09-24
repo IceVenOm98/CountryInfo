@@ -10,16 +10,16 @@ namespace CountryInfo
         /// <param name="country"></param>
         /// Принимает на вход объект-страну
         /// <returns></returns>
-        public String countryInfo(Country country)
+        public string CountryInfo(Country country)
         {
 
             string countryInfo = "";
-            countryInfo += "Title:    " + country.name + "\n";
-            countryInfo += "Code:    " + country.numericCode + "\n";
-            countryInfo += "Capital:    " + country.capital + "\n";
-            countryInfo += "Area:    " + country.area + "\n";
-            countryInfo += "Population:    " + country.population + "\n";
-            countryInfo += "Region:    " + country.region + "\n";
+            countryInfo += "Title:    " + country.Name + "\n";
+            countryInfo += "Code:    " + country.NumericCode + "\n";
+            countryInfo += "Capital:    " + country.Capital + "\n";
+            countryInfo += "Area:    " + country.Area + "\n";
+            countryInfo += "Population:    " + country.Population + "\n";
+            countryInfo += "Region:    " + country.Region + "\n";
             countryInfo += "=======================================" + "\n";
             return countryInfo;
         }

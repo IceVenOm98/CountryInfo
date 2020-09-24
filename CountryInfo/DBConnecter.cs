@@ -8,7 +8,7 @@ namespace CountryInfo
 {
     internal class DBConnecter
     {
-        private string ConnectionString { get; set; }
+        private string Configs;
         private DataContext db;
         private Table<Cities> tbCities;
         private Table<Countries> tbCountries;
@@ -21,21 +21,27 @@ namespace CountryInfo
         /// Принимает на вход строку подключения к БД
         public DBConnecter()
         {
-            ConnectionString = GetConnectionString();
-            db = new DataContext(ConnectionString);
+            SetConfigs(@"..\..\ConnectionString.txt");
+        }
+
+        /// <summary>
+        /// Установка пути к файлу с конфигом БД
+        /// </summary>
+        /// <param name="path"></param>
+        public void SetConfigs(string path)
+        {
+            Configs = GetConnectionString(path);
+            db = new DataContext(Configs);
             tbCities = db.GetTable<Cities>();
             tbCountries = db.GetTable<Countries>();
             tbRegions = db.GetTable<Regions>();
         }
-
         /// <summary>
         /// Получение строки подключения к БД из файла
         /// </summary>
         /// <returns></returns>
-        private string GetConnectionString()
+        private string GetConnectionString(string path)
         {
-            string path = @"..\..\ConnectionString.txt";
-
             try
             {
                 using (StreamReader sr = new StreamReader(path))

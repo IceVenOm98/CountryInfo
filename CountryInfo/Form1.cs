@@ -9,17 +9,17 @@ namespace CountryInfo
     public partial class Form1 : Form
     {
         private string APIurl = "https://restcountries.eu/rest/v2/name/";
-        private List<Country> countries;
-        private DBConnecter dBConnecter;
-        private ICountryInfoWriter countryWriter;
-        private IAPIConnecter apiConnecter = new JSONAPIConnecter();
+        private List<Country> Countries;
+        private DBConnecter DBConnecter;
+        private ICountryInfoWriter CountryWriter;
+        private IAPIConnecter APIConnecter = new JSONAPIConnecter();
         public Form1()
         {
             InitializeComponent();
-            dBConnecter = new DBConnecter();
-            countryWriter = new CountryInfoWriter();
-            apiConnecter.mode = 0;
-            countries = new List<Country>();
+            DBConnecter = new DBConnecter();
+            CountryWriter = new CountryInfoWriter();
+            APIConnecter.Mode = 0;
+            Countries = new List<Country>();
             ShowCountriesInDB();
         }
 
@@ -35,9 +35,9 @@ namespace CountryInfo
             string url = APIurl + textBox1.Text;
             try
             {
-                Country country = apiConnecter.GetCountry(url);
-                richTextBox1.Text = countryWriter.countryInfo(country);
-                countries.Add(country);
+                Country country = APIConnecter.GetCountry(url);
+                richTextBox1.Text = CountryWriter.CountryInfo(country);
+                Countries.Add(country);
             }
             catch (Exception ex)
             {
@@ -53,18 +53,18 @@ namespace CountryInfo
         /// <param name="e"></param>
         private void Button2_SaveToDB(object sender, EventArgs e)
         {
-            Country country = countries.Last();
+            Country country = Countries.Last();
 
             //Проверка столицы
             int cityId;
             try
             {
-                cityId = dBConnecter.GetCityByTitle(country.capital).Id;
+                cityId = DBConnecter.GetCityByTitle(country.Capital).Id;
             }
             catch (NullReferenceException)
             {
-                Cities capital = new Cities { Title = country.capital };
-                dBConnecter.AddCity(capital);
+                Cities capital = new Cities { Title = country.Capital };
+                DBConnecter.AddCity(capital);
                 cityId = capital.Id;
             }
 
@@ -72,38 +72,40 @@ namespace CountryInfo
             int RegionId;
             try
             {
-                RegionId = dBConnecter.GetRegionByTitle(country.region).Id;
+                RegionId = DBConnecter.GetRegionByTitle(country.Region).Id;
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
-                Regions region = new Regions { Title = country.region };
-                dBConnecter.AddRegion(region);
+                Regions region = new Regions { Title = country.Region };
+                DBConnecter.AddRegion(region);
                 RegionId = region.Id;
             }
 
             //проверка кода страны
             try
             {
-                Countries c = dBConnecter.GetCountryByCode(country.numericCode);
+                Countries c = DBConnecter.GetCountryByCode(country.NumericCode);
                 //изменение инфы старой страны
-                c.Area = countries.Last().area;
+                c.Area = Countries.Last().Area;
                 c.Capital = cityId;
-                c.Population = countries.Last().population;
+                c.Population = Countries.Last().Population;
                 c.Region = RegionId;
-                c.Title = countries.Last().name;
-                dBConnecter.UpdateDB();
+                c.Title = Countries.Last().Name;
+                DBConnecter.UpdateDB();
             }
             catch (System.NullReferenceException)
             {
                 //если страна не найдена, добавление ее в бд 
-                Countries country1 = new Countries();
-                country1.Title = country.name;
-                country1.Code = country.numericCode;
-                country1.Capital = cityId;
-                country1.Area = country.area;
-                country1.Population = country.population;
-                country1.Region = RegionId;
-                dBConnecter.AddCountry(country1);
+                Countries country1 = new Countries
+                {
+                    Title = country.Name,
+                    Code = country.NumericCode,
+                    Capital = cityId,
+                    Area = country.Area,
+                    Population = country.Population,
+                    Region = RegionId
+                };
+                DBConnecter.AddCountry(country1);
             }
 
             ShowCountriesInDB();
@@ -116,9 +118,9 @@ namespace CountryInfo
         {
             UpdateListOfCountries();
             richTextBox2.Text = "";
-            foreach (Country c in countries)
+            foreach (Country c in Countries)
             {
-                richTextBox2.Text += countryWriter.countryInfo(c);
+                richTextBox2.Text += CountryWriter.CountryInfo(c);
             }
         }
         /// <summary>
@@ -126,24 +128,23 @@ namespace CountryInfo
         /// </summary>
         private void UpdateListOfCountries()
         {
-            countries.Clear();
-            foreach (Countries c in dBConnecter.GetAllCountries())
+            Countries.Clear();
+            foreach (Countries c in DBConnecter.GetAllCountries())
             {
-
                 try
                 {
                     Country country = new Country
                     {
-                        name = c.Title,
-                        numericCode = c.Code,
-                        population = c.Population,
-                        area = c.Area,
-                        capital = dBConnecter.GetCityById(c.Capital).Title,
-                        region = dBConnecter.GetRegionById(c.Region).Title
+                        Name = c.Title,
+                        NumericCode = c.Code,
+                        Population = c.Population,
+                        Area = c.Area,
+                        Capital = DBConnecter.GetCityById(c.Capital).Title,
+                        Region = DBConnecter.GetRegionById(c.Region).Title
                     };
-                    countries.Add(country);
+                    Countries.Add(country);
                 }
-                catch (NullReferenceException ex)
+                catch (NullReferenceException)
                 {
                     MessageBox.Show("Проблема с отображением страны " + c.Title);
                 }
@@ -158,7 +159,7 @@ namespace CountryInfo
         private void RestcountriesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             APIurl = "https://restcountries.eu/rest/v2/name/";
-            apiConnecter.mode = 0;
+            APIConnecter.Mode = 0;
             foreach (ToolStripMenuItem m in aPIToolStripMenuItem.DropDownItems)
             {
                 m.Checked = false;
@@ -176,7 +177,7 @@ namespace CountryInfo
         private void HtmlwebToolStripMenuItem_Click(object sender, EventArgs e)
         {
             APIurl = "https://htmlweb.ru/geo/api.php?json&info&charset=utf-8&short&country=";
-            apiConnecter.mode = 1;
+            APIConnecter.Mode = 1;
             foreach (ToolStripMenuItem m in aPIToolStripMenuItem.DropDownItems)
             {
                 m.Checked = false;
@@ -193,7 +194,7 @@ namespace CountryInfo
         {
 
             APIurl = "https://api.ipgeolocationapi.com/countries/";
-            apiConnecter.mode = 2;
+            APIConnecter.Mode = 2;
             foreach (ToolStripMenuItem m in aPIToolStripMenuItem.DropDownItems)
             {
                 m.Checked = false;
@@ -202,9 +203,29 @@ namespace CountryInfo
             label1.Text = "Enter country code (ru, uk, etc.)";
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void ChooseConfigFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "..\\..\\";
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
 
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        DBConnecter.SetConfigs(openFileDialog.FileName);
+                    }
+                    catch (ArgumentException)
+                    {
+                        MessageBox.Show("Конфигурация неверная, выберите другой файл");
+                        ChooseConfigFileToolStripMenuItem_Click(sender, e);
+                    }
+                }
+            }
+            UpdateListOfCountries();
         }
     }
 }

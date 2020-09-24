@@ -7,7 +7,7 @@ namespace CountryInfo.Interfaces
         /// <summary>
         /// Переключатель номеров API
         /// </summary>
-        int mode { get; set; }
+        int Mode { get; set; }
         /// <summary>
         /// Получает страну по ссылкке
         /// </summary>

@@ -39,6 +39,8 @@
             this.htmlwebToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ipgeolocationapiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chooseConfigFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,6 +92,7 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
             this.aPIToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -112,7 +115,7 @@
             this.restcountriesToolStripMenuItem.Checked = true;
             this.restcountriesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.restcountriesToolStripMenuItem.Name = "restcountriesToolStripMenuItem";
-            this.restcountriesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.restcountriesToolStripMenuItem.Size = new System.Drawing.Size(206, 26);
             this.restcountriesToolStripMenuItem.Text = "restcountries";
             this.restcountriesToolStripMenuItem.Click += new System.EventHandler(this.RestcountriesToolStripMenuItem_Click);
             // 
@@ -120,14 +123,14 @@
             // 
             this.htmlwebToolStripMenuItem.Enabled = false;
             this.htmlwebToolStripMenuItem.Name = "htmlwebToolStripMenuItem";
-            this.htmlwebToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.htmlwebToolStripMenuItem.Size = new System.Drawing.Size(206, 26);
             this.htmlwebToolStripMenuItem.Text = "htmlweb";
             this.htmlwebToolStripMenuItem.Click += new System.EventHandler(this.HtmlwebToolStripMenuItem_Click);
             // 
             // ipgeolocationapiToolStripMenuItem
             // 
             this.ipgeolocationapiToolStripMenuItem.Name = "ipgeolocationapiToolStripMenuItem";
-            this.ipgeolocationapiToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.ipgeolocationapiToolStripMenuItem.Size = new System.Drawing.Size(206, 26);
             this.ipgeolocationapiToolStripMenuItem.Text = "ipgeolocationapi";
             this.ipgeolocationapiToolStripMenuItem.Click += new System.EventHandler(this.IpgeolocationapiToolStripMenuItem_Click);
             // 
@@ -139,6 +142,21 @@
             this.label1.Size = new System.Drawing.Size(119, 17);
             this.label1.TabIndex = 6;
             this.label1.Text = "Enter country title";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.chooseConfigFileToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // chooseConfigFileToolStripMenuItem
+            // 
+            this.chooseConfigFileToolStripMenuItem.Name = "chooseConfigFileToolStripMenuItem";
+            this.chooseConfigFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.chooseConfigFileToolStripMenuItem.Text = "Choose config file...";
+            this.chooseConfigFileToolStripMenuItem.Click += new System.EventHandler(this.ChooseConfigFileToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -155,7 +173,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -176,6 +193,8 @@
         private System.Windows.Forms.ToolStripMenuItem htmlwebToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ipgeolocationapiToolStripMenuItem;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chooseConfigFileToolStripMenuItem;
     }
 }
 

@@ -14,6 +14,6 @@ namespace CountryInfo.Interfaces
         /// Принимает на вход объект страну
         /// <returns></returns>
         /// Возвращает строку, содержащую всю информацию о стране
-        String countryInfo(Country c);
+        String CountryInfo(Country c);
     }
 }
