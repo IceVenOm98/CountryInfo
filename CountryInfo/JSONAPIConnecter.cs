@@ -10,17 +10,20 @@ namespace CountryInfo
         public Country GetCountry(string url)
         {
             string response = GetStringFromUrl(url);
-            if (mode == 0)
+            switch (mode)
             {
-                response = EditStringFromRestcountries(response);
-            }
-            if (mode == 1)
-            {
-                response = EditStringFromHtmlweb(response);
-            }
-            if (mode == 2)
-            {
-                response = EditStringFromIpgeolocationapi(response);
+                case 0:
+                    response = EditStringFromRestcountries(response);
+                    break;
+                case 1:
+                    response = EditStringFromHtmlweb(response);
+                    break;
+                case 2:
+                    response = EditStringFromIpgeolocationapi(response);
+                    break;
+                default: 
+                    response = EditStringFromRestcountries(response);
+                    break;
             }
 
             return DeserializeJSON(response);

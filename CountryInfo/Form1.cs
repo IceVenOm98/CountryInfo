@@ -16,12 +16,13 @@ namespace CountryInfo
         public Form1()
         {
             InitializeComponent();
-            dBConnecter = new DBConnecter(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=Countries;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            dBConnecter = new DBConnecter();
             countryWriter = new CountryInfoWriter();
             apiConnecter.mode = 0;
             countries = new List<Country>();
             ShowCountriesInDB();
         }
+
 
         /// <summary>
         /// Запрос информации по API
@@ -60,7 +61,7 @@ namespace CountryInfo
             {
                 cityId = dBConnecter.GetCityByTitle(country.capital).Id;
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 Cities capital = new Cities { Title = country.capital };
                 dBConnecter.AddCity(capital);
@@ -92,19 +93,16 @@ namespace CountryInfo
                 c.Title = countries.Last().name;
                 dBConnecter.UpdateDB();
             }
-            catch (NullReferenceException ex)
+            catch (System.NullReferenceException)
             {
-                //добавление в бд новой страны
-                Countries country1 = new Countries
-                {
-                    Title = country.name,
-                    Code = country.numericCode,
-                    Capital = cityId,
-                    Area = country.area,
-                    Population = country.population,
-                    Region = RegionId
-                };
-                // добавляем в таблицу 
+                //если страна не найдена, добавление ее в бд 
+                Countries country1 = new Countries();
+                country1.Title = country.name;
+                country1.Code = country.numericCode;
+                country1.Capital = cityId;
+                country1.Area = country.area;
+                country1.Population = country.population;
+                country1.Region = RegionId;
                 dBConnecter.AddCountry(country1);
             }
 
@@ -166,6 +164,7 @@ namespace CountryInfo
                 m.Checked = false;
             }
             restcountriesToolStripMenuItem.Checked = true;
+            label1.Text = "Enter country title";
 
         }
 
@@ -200,6 +199,12 @@ namespace CountryInfo
                 m.Checked = false;
             }
             ipgeolocationapiToolStripMenuItem.Checked = true;
+            label1.Text = "Enter country code (ru, uk, etc.)";
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

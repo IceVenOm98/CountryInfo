@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Data.Linq;
+using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace CountryInfo
 {
     internal class DBConnecter
     {
-        private String ConnectionString { get; set; }
+        private string ConnectionString { get; set; }
         private DataContext db;
         private Table<Cities> tbCities;
         private Table<Countries> tbCountries;
@@ -17,15 +19,36 @@ namespace CountryInfo
         /// </summary>
         /// <param name="connection"></param>
         /// Принимает на вход строку подключения к БД
-        public DBConnecter(String connection)
+        public DBConnecter()
         {
-            ConnectionString = connection;
+            ConnectionString = GetConnectionString();
             db = new DataContext(ConnectionString);
             tbCities = db.GetTable<Cities>();
             tbCountries = db.GetTable<Countries>();
             tbRegions = db.GetTable<Regions>();
         }
 
+        /// <summary>
+        /// Получение строки подключения к БД из файла
+        /// </summary>
+        /// <returns></returns>
+        private string GetConnectionString()
+        {
+            string path = @"..\..\ConnectionString.txt";
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    return sr.ReadToEnd();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return null;
+            }
+        }
 
         /// <summary>
         /// Добавление города
@@ -46,7 +69,7 @@ namespace CountryInfo
         /// Название города
         /// <returns></returns>
         /// Возвращает объект-город
-        public Cities GetCityByTitle(String cityTitle)
+        public Cities GetCityByTitle(string cityTitle)
         {
             var query = from city in tbCities
                         where city.Title == cityTitle
