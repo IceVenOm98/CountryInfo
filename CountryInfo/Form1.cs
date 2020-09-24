@@ -12,16 +12,15 @@ namespace CountryInfo
         private List<Country> countries;
         private DBConnecter dBConnecter;
         private ICountryInfoWriter countryWriter;
-        private IAPIConnecter apiConnecter;
+        private IAPIConnecter apiConnecter = new JSONAPIConnecter();
         public Form1()
         {
             InitializeComponent();
             dBConnecter = new DBConnecter(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=Countries;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             countryWriter = new CountryInfoWriter();
-            apiConnecter = new JSONAPIConnecter();
             apiConnecter.mode = 0;
             countries = new List<Country>();
-            showCountriesInDB();
+            ShowCountriesInDB();
         }
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace CountryInfo
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button_GetCountryByAPI(object sender, EventArgs e)
+        private void Button_GetCountryByAPI(object sender, EventArgs e)
         {
 
             string url = APIurl + textBox1.Text;
@@ -51,7 +50,7 @@ namespace CountryInfo
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button2_SaveToDB(object sender, EventArgs e)
+        private void Button2_SaveToDB(object sender, EventArgs e)
         {
             Country country = countries.Last();
 
@@ -59,12 +58,12 @@ namespace CountryInfo
             int cityId;
             try
             {
-                cityId = dBConnecter.getCityByTitle(country.capital).Id;
+                cityId = dBConnecter.GetCityByTitle(country.capital).Id;
             }
             catch (NullReferenceException ex)
             {
                 Cities capital = new Cities { Title = country.capital };
-                dBConnecter.addCity(capital);
+                dBConnecter.AddCity(capital);
                 cityId = capital.Id;
             }
 
@@ -72,26 +71,26 @@ namespace CountryInfo
             int RegionId;
             try
             {
-                RegionId = dBConnecter.getRegionByTitle(country.region).Id;
+                RegionId = dBConnecter.GetRegionByTitle(country.region).Id;
             }
             catch (NullReferenceException ex)
             {
                 Regions region = new Regions { Title = country.region };
-                dBConnecter.addRegion(region);
+                dBConnecter.AddRegion(region);
                 RegionId = region.Id;
             }
 
             //проверка кода страны
             try
             {
-                Countries c = dBConnecter.getCountryByCode(country.numericCode);
+                Countries c = dBConnecter.GetCountryByCode(country.numericCode);
                 //изменение инфы старой страны
                 c.Area = countries.Last().area;
                 c.Capital = cityId;
                 c.Population = countries.Last().population;
                 c.Region = RegionId;
                 c.Title = countries.Last().name;
-                dBConnecter.updateDB();
+                dBConnecter.UpdateDB();
             }
             catch (NullReferenceException ex)
             {
@@ -106,18 +105,18 @@ namespace CountryInfo
                     Region = RegionId
                 };
                 // добавляем в таблицу 
-                dBConnecter.addCountry(country1);
+                dBConnecter.AddCountry(country1);
             }
 
-            showCountriesInDB();
+            ShowCountriesInDB();
 
         }
         /// <summary>
         /// Обновляет вывод всех стран из БД
         /// </summary>
-        private void showCountriesInDB()
+        private void ShowCountriesInDB()
         {
-            updateListOfCountries();
+            UpdateListOfCountries();
             richTextBox2.Text = "";
             foreach (Country c in countries)
             {
@@ -127,21 +126,23 @@ namespace CountryInfo
         /// <summary>
         /// Обновляет список стран из БД
         /// </summary>
-        private void updateListOfCountries()
+        private void UpdateListOfCountries()
         {
             countries.Clear();
-            foreach (Countries c in dBConnecter.getAllCountries())
+            foreach (Countries c in dBConnecter.GetAllCountries())
             {
 
                 try
                 {
-                    Country country = new Country();
-                    country.name = c.Title;
-                    country.numericCode = c.Code;
-                    country.population = c.Population;
-                    country.area = c.Area;
-                    country.capital = dBConnecter.getCityById(c.Capital).Title;
-                    country.region = dBConnecter.getRegionById(c.Region).Title;
+                    Country country = new Country
+                    {
+                        name = c.Title,
+                        numericCode = c.Code,
+                        population = c.Population,
+                        area = c.Area,
+                        capital = dBConnecter.GetCityById(c.Capital).Title,
+                        region = dBConnecter.GetRegionById(c.Region).Title
+                    };
                     countries.Add(country);
                 }
                 catch (NullReferenceException ex)
@@ -156,7 +157,7 @@ namespace CountryInfo
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void restcountriesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RestcountriesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             APIurl = "https://restcountries.eu/rest/v2/name/";
             apiConnecter.mode = 0;
@@ -173,7 +174,7 @@ namespace CountryInfo
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void htmlwebToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HtmlwebToolStripMenuItem_Click(object sender, EventArgs e)
         {
             APIurl = "https://htmlweb.ru/geo/api.php?json&info&charset=utf-8&short&country=";
             apiConnecter.mode = 1;
@@ -189,7 +190,7 @@ namespace CountryInfo
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ipgeolocationapiToolStripMenuItem_Click(object sender, EventArgs e)
+        private void IpgeolocationapiToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
             APIurl = "https://api.ipgeolocationapi.com/countries/";

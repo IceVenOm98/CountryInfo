@@ -6,7 +6,7 @@ namespace CountryInfo
 {
     internal class DBConnecter
     {
-        private String connectionString { get; set; }
+        private String ConnectionString { get; set; }
         private DataContext db;
         private Table<Cities> tbCities;
         private Table<Countries> tbCountries;
@@ -19,8 +19,8 @@ namespace CountryInfo
         /// Принимает на вход строку подключения к БД
         public DBConnecter(String connection)
         {
-            connectionString = connection;
-            db = new DataContext(connectionString);
+            ConnectionString = connection;
+            db = new DataContext(ConnectionString);
             tbCities = db.GetTable<Cities>();
             tbCountries = db.GetTable<Countries>();
             tbRegions = db.GetTable<Regions>();
@@ -32,10 +32,10 @@ namespace CountryInfo
         /// </summary>
         /// <param name="city"></param>
         /// Название города
-        public void addCity(Cities city)
+        public void AddCity(Cities city)
         {
             db.GetTable<Cities>().InsertOnSubmit(city);
-            updateDB();
+            UpdateDB();
         }
 
 
@@ -46,7 +46,7 @@ namespace CountryInfo
         /// Название города
         /// <returns></returns>
         /// Возвращает объект-город
-        public Cities getCityByTitle(String cityTitle)
+        public Cities GetCityByTitle(String cityTitle)
         {
             var query = from city in tbCities
                         where city.Title == cityTitle
@@ -69,7 +69,7 @@ namespace CountryInfo
         /// ID города
         /// <returns></returns>
         /// Возвращает объект-город
-        public Cities getCityById(int cityId)
+        public Cities GetCityById(int cityId)
         {
             var query = from city in tbCities
                         where city.Id == cityId
@@ -89,10 +89,10 @@ namespace CountryInfo
         /// </summary>
         /// <param name="region"></param>
         /// Принимает объект-регион
-        public void addRegion(Regions region)
+        public void AddRegion(Regions region)
         {
             db.GetTable<Regions>().InsertOnSubmit(region);
-            updateDB();
+            UpdateDB();
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace CountryInfo
         /// Принимает название региона
         /// <returns></returns>
         /// Возвращает объект-регион
-        public Regions getRegionByTitle(String regionTitle)
+        public Regions GetRegionByTitle(String regionTitle)
         {
             var query = from region in tbRegions
                         where region.Title == regionTitle
@@ -125,7 +125,7 @@ namespace CountryInfo
         /// Принимает ID региона
         /// <returns></returns>
         /// Возвращает объект-регион
-        public Regions getRegionById(int regionId)
+        public Regions GetRegionById(int regionId)
         {
             var query = from region in tbRegions
                         where region.Id == regionId
@@ -145,10 +145,10 @@ namespace CountryInfo
         /// </summary>
         /// <param name="country"></param>
         /// Принимает объект-страну
-        public void addCountry(Countries country)
+        public void AddCountry(Countries country)
         {
             db.GetTable<Countries>().InsertOnSubmit(country);
-            updateDB();
+            UpdateDB();
         }
 
 
@@ -159,7 +159,7 @@ namespace CountryInfo
         /// Принимает код страны
         /// <returns></returns>
         /// Возвращает объект-страну
-        public Countries getCountryByCode(string countryCode)
+        public Countries GetCountryByCode(string countryCode)
         {
             var query = from country in tbCountries
                         where country.Code == countryCode
@@ -180,7 +180,7 @@ namespace CountryInfo
         /// </summary>
         /// <returns></returns>
         /// Возвращает список объектов-стран
-        public IQueryable<Countries> getAllCountries()
+        public IQueryable<Countries> GetAllCountries()
         {
             var query = from country in tbCountries
                         select country;
@@ -191,7 +191,7 @@ namespace CountryInfo
         /// <summary>
         /// Обновление изменений БД
         /// </summary>
-        public void updateDB()
+        public void UpdateDB()
         {
             db.SubmitChanges();
         }

@@ -49,7 +49,7 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Show info";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button_GetCountryByAPI);
+            this.button1.Click += new System.EventHandler(this.Button_GetCountryByAPI);
             // 
             // textBox1
             // 
@@ -67,7 +67,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Save to DB";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_SaveToDB);
+            this.button2.Click += new System.EventHandler(this.Button2_SaveToDB);
             // 
             // richTextBox1
             // 
@@ -113,7 +113,7 @@
             this.restcountriesToolStripMenuItem.Name = "restcountriesToolStripMenuItem";
             this.restcountriesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.restcountriesToolStripMenuItem.Text = "restcountries";
-            this.restcountriesToolStripMenuItem.Click += new System.EventHandler(this.restcountriesToolStripMenuItem_Click);
+            this.restcountriesToolStripMenuItem.Click += new System.EventHandler(this.RestcountriesToolStripMenuItem_Click);
             // 
             // htmlwebToolStripMenuItem
             // 
@@ -121,14 +121,14 @@
             this.htmlwebToolStripMenuItem.Name = "htmlwebToolStripMenuItem";
             this.htmlwebToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.htmlwebToolStripMenuItem.Text = "htmlweb";
-            this.htmlwebToolStripMenuItem.Click += new System.EventHandler(this.htmlwebToolStripMenuItem_Click);
+            this.htmlwebToolStripMenuItem.Click += new System.EventHandler(this.HtmlwebToolStripMenuItem_Click);
             // 
             // ipgeolocationapiToolStripMenuItem
             // 
             this.ipgeolocationapiToolStripMenuItem.Name = "ipgeolocationapiToolStripMenuItem";
             this.ipgeolocationapiToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.ipgeolocationapiToolStripMenuItem.Text = "ipgeolocationapi";
-            this.ipgeolocationapiToolStripMenuItem.Click += new System.EventHandler(this.ipgeolocationapiToolStripMenuItem_Click);
+            this.ipgeolocationapiToolStripMenuItem.Click += new System.EventHandler(this.IpgeolocationapiToolStripMenuItem_Click);
             // 
             // Form1
             // 
