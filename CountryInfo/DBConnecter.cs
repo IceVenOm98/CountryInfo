@@ -14,27 +14,31 @@ namespace CountryInfo
         private Table<Countries> tbCountries;
         private Table<Regions> tbRegions;
 
-        /// <summary>
-        /// Конструктор класса для работы с БД
-        /// </summary>
-        /// <param name="connection"></param>
-        /// Принимает на вход строку подключения к БД
-        public DBConnecter()
-        {
-            SetConfigs(@"..\..\ConnectionString.txt");
-        }
 
         /// <summary>
         /// Установка пути к файлу с конфигом БД
         /// </summary>
         /// <param name="path"></param>
-        public void SetConfigs(string path)
+        public bool SetConfigs(string path)
         {
             Configs = GetConnectionString(path);
             db = new DataContext(Configs);
             tbCities = db.GetTable<Cities>();
             tbCountries = db.GetTable<Countries>();
-            tbRegions = db.GetTable<Regions>();
+            tbRegions = db.GetTable<Regions>();           
+            return db.DatabaseExists();
+        }
+
+        /// <summary>
+        /// Проверка установленной конфигурации
+        /// </summary>
+        /// <returns></returns>
+        public bool IsSetConfig()
+        {
+            if (Configs == null || !db.DatabaseExists()) 
+                return false;
+            else 
+                return true;
         }
         /// <summary>
         /// Получение строки подключения к БД из файла

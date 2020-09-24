@@ -53,62 +53,67 @@ namespace CountryInfo
         /// <param name="e"></param>
         private void Button2_SaveToDB(object sender, EventArgs e)
         {
-            Country country = Countries.Last();
+            if (!DBConnecter.IsSetConfig())
+                MessageBox.Show("БД не подключена. Выберите конфигуарционный файл.");
+            else
+            {
+                Country country = Countries.Last();
 
-            //Проверка столицы
-            int cityId;
-            try
-            {
-                cityId = DBConnecter.GetCityByTitle(country.Capital).Id;
-            }
-            catch (NullReferenceException)
-            {
-                Cities capital = new Cities { Title = country.Capital };
-                DBConnecter.AddCity(capital);
-                cityId = capital.Id;
-            }
-
-            //Проверка региона
-            int RegionId;
-            try
-            {
-                RegionId = DBConnecter.GetRegionByTitle(country.Region).Id;
-            }
-            catch (NullReferenceException)
-            {
-                Regions region = new Regions { Title = country.Region };
-                DBConnecter.AddRegion(region);
-                RegionId = region.Id;
-            }
-
-            //проверка кода страны
-            try
-            {
-                Countries c = DBConnecter.GetCountryByCode(country.NumericCode);
-                //изменение инфы старой страны
-                c.Area = Countries.Last().Area;
-                c.Capital = cityId;
-                c.Population = Countries.Last().Population;
-                c.Region = RegionId;
-                c.Title = Countries.Last().Name;
-                DBConnecter.UpdateDB();
-            }
-            catch (System.NullReferenceException)
-            {
-                //если страна не найдена, добавление ее в бд 
-                Countries country1 = new Countries
+                //Проверка столицы
+                int cityId;
+                try
                 {
-                    Title = country.Name,
-                    Code = country.NumericCode,
-                    Capital = cityId,
-                    Area = country.Area,
-                    Population = country.Population,
-                    Region = RegionId
-                };
-                DBConnecter.AddCountry(country1);
+                    cityId = DBConnecter.GetCityByTitle(country.Capital).Id;
+                }
+                catch (NullReferenceException)
+                {
+                    Cities capital = new Cities { Title = country.Capital };
+                    DBConnecter.AddCity(capital);
+                    cityId = capital.Id;
+                }
+
+                //Проверка региона
+                int RegionId;
+                try
+                {
+                    RegionId = DBConnecter.GetRegionByTitle(country.Region).Id;
+                }
+                catch (NullReferenceException)
+                {
+                    Regions region = new Regions { Title = country.Region };
+                    DBConnecter.AddRegion(region);
+                    RegionId = region.Id;
+                }
+
+                //проверка кода страны
+                try
+                {
+                    Countries c = DBConnecter.GetCountryByCode(country.NumericCode);
+                    //изменение инфы старой страны
+                    c.Area = Countries.Last().Area;
+                    c.Capital = cityId;
+                    c.Population = Countries.Last().Population;
+                    c.Region = RegionId;
+                    c.Title = Countries.Last().Name;
+                    DBConnecter.UpdateDB();
+                }
+                catch (System.NullReferenceException)
+                {
+                    //если страна не найдена, добавление ее в бд 
+                    Countries country1 = new Countries
+                    {
+                        Title = country.Name,
+                        Code = country.NumericCode,
+                        Capital = cityId,
+                        Area = country.Area,
+                        Population = country.Population,
+                        Region = RegionId
+                    };
+                    DBConnecter.AddCountry(country1);
+                }
+                ShowCountriesInDB();
             }
 
-            ShowCountriesInDB();
 
         }
         /// <summary>
@@ -116,11 +121,14 @@ namespace CountryInfo
         /// </summary>
         private void ShowCountriesInDB()
         {
-            UpdateListOfCountries();
-            richTextBox2.Text = "";
-            foreach (Country c in Countries)
+            if (DBConnecter.IsSetConfig())
             {
-                richTextBox2.Text += CountryWriter.CountryInfo(c);
+                UpdateListOfCountries();
+                richTextBox2.Text = "";
+                foreach (Country c in Countries)
+                {
+                    richTextBox2.Text += CountryWriter.CountryInfo(c);
+                }
             }
         }
         /// <summary>
@@ -216,7 +224,11 @@ namespace CountryInfo
                 {
                     try
                     {
-                        DBConnecter.SetConfigs(openFileDialog.FileName);
+                        if (!DBConnecter.SetConfigs(openFileDialog.FileName))
+                        {
+                            MessageBox.Show("Подключить БД не удалось, выберите другой файл");
+                            return;
+                        }
                     }
                     catch (ArgumentException)
                     {
